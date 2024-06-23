@@ -1,0 +1,23 @@
+{
+  "name": "report-generator",
+  "version": "1.0.0",
+  "description": "Automated Data Fetching: Fetch data from an external API (e.g., weather API, financial data API) at regular intervals (e.g., daily, weekly).",
+  "main": "src/index.js",
+  "scripts": {
+    "start": "node src/index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "axios": "^1.7.2",
+    "chart.js": "^3.9.1",
+    "chartjs-node-canvas": "^4.1.6",
+    "chartjs-plugin-datalabels": "^2.2.0",
+    "cron": "^3.1.7",
+    "dotenv": "^16.4.5",
+    "fs": "^0.0.1-security",
+    "nodemailer": "^6.9.13"
+  },
+  "type": "module"
+}
