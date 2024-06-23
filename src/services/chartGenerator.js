@@ -1,18 +1,15 @@
 import { ChartJSNodeCanvas } from 'chartjs-node-canvas';
 import fs from 'fs';
-import { fileURLToPath } from 'url';
-import path, { dirname } from 'path';
-import { getHourlyWaveHeightConfig, getHourlyWaveDirectionConfig, getHourlyWavePeriodConfig } from './chartConfig.js'
+import path from 'path';
+import { getDirname, getChartConfigurations } from '../utils/helpers.js'
+import { CHART_HEIGHT, CHART_WIDTH } from '../utils/constants.js';
 
-const chartWidth = 800;
-const chartHeight = 600;
-
-const chartJSNodeCanvas = new ChartJSNodeCanvas({ width: chartWidth, height: chartHeight });
+const chartJSNodeCanvas = new ChartJSNodeCanvas({ width: CHART_WIDTH, height: CHART_HEIGHT });
 
 export async function generateChart(data) {
   const timestamps = data.hourly.time;
 
-  const labels = timestamps.map(timestamp => {
+  const timestampLabels = timestamps.map(timestamp => {
     const date = new Date(timestamp);
     return date.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
   });
@@ -27,31 +24,19 @@ export async function generateChart(data) {
  
   const chartTitle = `Hourly forecast for ${formattedCurrentDate} (${data.timezone})`
 
-  const hourlyWaveHeightImageBuffer = await chartJSNodeCanvas.renderToBuffer(getHourlyWaveHeightConfig(labels, data, chartTitle));
-  const hourlyWaveDirectionImageBuffer = await chartJSNodeCanvas.renderToBuffer(getHourlyWaveDirectionConfig(labels, data, chartTitle));
-  const hourlyWavePeriodImageBuffer = await chartJSNodeCanvas.renderToBuffer(getHourlyWavePeriodConfig(labels, data, chartTitle));
+  const { hourlyWaveHeightConfig, hourlyWaveDirectionConfig, hourlyWavePeriodConfig } = getChartConfigurations(data, timestampLabels, chartTitle);
+  const hourlyWaveHeightImageBuffer = await chartJSNodeCanvas.renderToBuffer(hourlyWaveHeightConfig);
+  const hourlyWaveDirectionImageBuffer = await chartJSNodeCanvas.renderToBuffer(hourlyWaveDirectionConfig);
+  const hourlyWavePeriodImageBuffer = await chartJSNodeCanvas.renderToBuffer(hourlyWavePeriodConfig);
 
   saveChartAsImage(hourlyWaveHeightImageBuffer, 'waveHeightChart');
   saveChartAsImage(hourlyWaveDirectionImageBuffer, 'waveDirectionChart');
   saveChartAsImage(hourlyWavePeriodImageBuffer, 'wavePeriodChart');
 }
 
-
-// const createDataSet = (label, data, backgroundColor) => {
-//   return {
-//     label,
-//     data,
-//     backgroundColor,
-//     borderWidth: 1,
-//     pointRadius: 0,
-//   }
-// }
-
 async function saveChartAsImage(buffer, fileName) {
   try {
-    const __filename = fileURLToPath(import.meta.url);
-    const __dirname = dirname(__filename);
-    const outputPath = path.join(__dirname, `../assets/${fileName}.png`);
+    const outputPath = path.join(getDirname(), `../assets/${fileName}.png`);
 
     fs.writeFile(outputPath, buffer, 'base64', err => {
       if (err) {
