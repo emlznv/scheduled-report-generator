@@ -1,28 +1,24 @@
 import { ChartJSNodeCanvas } from 'chartjs-node-canvas';
 import fs from 'fs';
 import path from 'path';
-import { getDirname, getChartConfigurations } from '../utils/helpers.js'
+import {
+  getDirname,
+  getChartConfigurations,
+  getFormattedTimestamps,
+  getFormattedCoordinates,
+  getFormattedCurrentDate
+} from '../utils/helpers.js'
 import { CHART_HEIGHT, CHART_WIDTH } from '../utils/constants.js';
 
 const chartJSNodeCanvas = new ChartJSNodeCanvas({ width: CHART_WIDTH, height: CHART_HEIGHT });
 
 export async function generateChart(data) {
-  const timestamps = data.hourly.time;
-
-  const timestampLabels = timestamps.map(timestamp => {
-    const date = new Date(timestamp);
-    return date.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
-  });
-
+  const timestampLabels = getFormattedTimestamps([...data.hourly.time]);
   const currentDate = new Date(data.hourly.time[0]);
+  const formattedCurrentDate = getFormattedCurrentDate(currentDate);
+  const { formattedLongitude, formattedLatitude} = getFormattedCoordinates();
 
-  const formattedCurrentDate = currentDate.toLocaleDateString('en-US', {
-    year: 'numeric',
-    month: 'long',
-    day: 'numeric',
-  });
- 
-  const chartTitle = `Hourly forecast for ${formattedCurrentDate} (${data.timezone})`
+  const chartTitle = `${formattedCurrentDate} (${data.timezone}) | Longitude: ${formattedLongitude}, Latitude: ${formattedLatitude}`;
 
   const { hourlyWaveHeightConfig, hourlyWaveDirectionConfig, hourlyWavePeriodConfig } = getChartConfigurations(data, timestampLabels, chartTitle);
   const hourlyWaveHeightImageBuffer = await chartJSNodeCanvas.renderToBuffer(hourlyWaveHeightConfig);

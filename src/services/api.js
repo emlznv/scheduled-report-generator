@@ -14,11 +14,11 @@ const hourlyParams = [
     'ocean_current_velocity',
 ]
 
-const forecastDaysParam = 1
+const forecastDaysParam = 1;
 
 export const fetchWeatherData = async () => {
     try {
-        const response = await axios.get(`${process.env.API_BASE_URL}/marine?latitude=${process.env.LATITUDE}&longitude=${process.env.LONGITUDE}&forecast_days=${forecastDaysParam}&hourly=${hourlyParams.join(',')}`);
+        const response = await axios.get(`${process.env.API_BASE_URL}/marine?latitude=${process.env.LATITUDE}&longitude=${process.env.LONGITUDE}&timezone=${process.env.TIME_ZONE}&forecast_days=${forecastDaysParam}&hourly=${hourlyParams.join(',')}`);
         return response.data;
     } catch (error) {
         console.error('Error fetching weather data:', error);

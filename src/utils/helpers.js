@@ -7,6 +7,26 @@ export const getDirname = () => {
     return dirname(__filename);
 }
 
+export const getFormattedTimestamps = (timestamps) => {
+    return timestamps.map(timestamp => {
+        const date = new Date(timestamp);
+        return date.toLocaleTimeString(process.env.LOCALE, { hour: '2-digit', minute: '2-digit' });
+    });
+}
+
+export const getFormattedCurrentDate = (date) => {
+    return date.toLocaleDateString(process.env.LOCALE, {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric',
+    });
+}
+
+export const getFormattedCoordinates = () => {
+    const formattedLatitude = Number(process.env.LATITUDE).toFixed(2);
+    const formattedLongitude = Number(process.env.LONGITUDE).toFixed(2);
+    return { formattedLongitude, formattedLatitude}
+}
 
 const getCommonChartConfig = (title) =>  {
     return {

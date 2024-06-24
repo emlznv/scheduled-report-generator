@@ -2,7 +2,8 @@ export const EMOJIS = {
     surf: '🏄', 
     min: '📉',
     max: '📈',
-    avg: '📊'
+    avg: '📊',
+    wave: '🌊',
 }
 
 export const CHART_COLORS = {

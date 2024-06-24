@@ -15,8 +15,6 @@ const getChartOverview = (data, unit) => {
     `
 }
 
-// show long and lat in the title of chart??
-
 export async function sendEmailWithChart(data) {
     const waveHeightOverview = getChartOverview(data.hourly.wave_height, data.hourly_units.wave_height);
     const waveDirectionOverview = getChartOverview(data.hourly.wave_direction, data.hourly_units.wave_direction);
@@ -44,6 +42,7 @@ export async function sendEmailWithChart(data) {
         port: 465,
         secure: true,
         html: `
+            <h2>${EMOJIS.wave} Check out the hourly forecast!</h2>
             <h3>Wave height:</h3>
             ${waveHeightOverview}
             <img src="cid:waveHeightChart" alt="Wave Height Chart">
