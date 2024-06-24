@@ -8,7 +8,7 @@ dotenv.config();
 
 /** Runs every day at 8 AM */
 new CronJob(
-  '*/1 * * * *',
+  '0 8 * * *',
   async function () {
     try {
       const forecastData = await fetchWeatherData();
