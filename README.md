@@ -37,4 +37,7 @@ The purpose of this project is to:
 ```bash
   npm start
 ```
+## Email Preview
+
+![chartprevie2](https://github.com/emlznv/scheduled-report-generator/assets/63013697/20211fdc-0640-4c93-bad5-37e50d5c08a4)
 
