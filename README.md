@@ -3,7 +3,7 @@ The purpose of this project is to:
   1. Fetch data from an external API at regular intervals
   2. Process the fetched data into a readable report format
   3. Send the generated report via email to specified recipients using an email service
-  4. Use a cron job to to trigger the script at scheduled times
+  4. Use a cron job to trigger the script at scheduled times
 
 ## Run Locally
 
